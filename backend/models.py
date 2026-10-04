@@ -7,6 +7,7 @@ class Genero(enum.Enum):
     femenino = "Femenino"
     otro = "Otro"
     no_decir = "Prefiero no decir"
+    pendiente = "Pendiente"
 
 class Usuario(Base):
     __tablename__ = "usuarios"
