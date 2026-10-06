@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from database import get_db
-from models import Usuario, Genero
+from models import Usuario
 import schemas
 import auth
 
@@ -35,7 +35,7 @@ def sign_up(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)):
 def login(credenciales: schemas.UsuarioLogin, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.email == credenciales.email).first()
 
-    if not usuario or not auth.verify_password(credenciales.password, str(usuario.password_hash)):
+    if not usuario or not auth.verify_password(credenciales.password, (usuario.password_hash)):
         raise HTTPException(status_code=401, detail="Email o contraseña incorrectos")
 
     access_token = auth.create_access_token(data={"sub": usuario.email})

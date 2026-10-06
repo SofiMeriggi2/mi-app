@@ -1,5 +1,7 @@
 import enum
-from sqlalchemy import Column, Integer, String, Date, Enum
+from datetime import date
+from sqlalchemy import Date, Enum, String
+from sqlalchemy.orm import Mapped, mapped_column
 from database import Base
 
 class Genero(enum.Enum):
@@ -10,10 +12,10 @@ class Genero(enum.Enum):
 
 class Usuario(Base):
     __tablename__ = "usuarios"
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, nullable=False)
-    password_hash = Column(String, nullable=False)
-    nombre = Column(String, nullable=True)
-    apellido = Column(String, nullable=True)
-    genero = Column(Enum(Genero), nullable=True)
-    fecha_de_nacimiento = Column(Date, nullable=True)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    email: Mapped[str] = mapped_column(String, unique=True)
+    password_hash: Mapped[str] = mapped_column(String)
+    nombre: Mapped[str | None] = mapped_column(String)
+    apellido: Mapped[str | None] = mapped_column(String)
+    genero: Mapped[Genero | None] = mapped_column(Enum(Genero))
+    fecha_de_nacimiento: Mapped[date | None] = mapped_column(Date)

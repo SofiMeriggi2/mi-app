@@ -1,4 +1,3 @@
-from pydantic import BaseModel, EmailStr
 from datetime import date
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, PastDate
 from models import Genero
