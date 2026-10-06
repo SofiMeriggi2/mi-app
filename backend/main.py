@@ -57,7 +57,7 @@ def completar_perfil(
     usuario_actual.genero = perfil.genero
     usuario_actual.fecha_de_nacimiento = perfil.fecha_de_nacimiento
     
-    db.commit
+    db.commit()
     db.refresh(usuario_actual)
     
     return usuario_actual
