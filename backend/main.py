@@ -21,11 +21,7 @@ def sign_up(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)):
     
     nuevo_usuario = Usuario (
         email = usuario.email,
-        password_hash = auth.hash_password(usuario.password),
-        nombre = "pendiente",
-        apellido = "pendiente",
-        genero = Genero.pendiente,
-        fecha_de_nacimiento = "2001-01-01"
+        password_hash = auth.hash_password(usuario.password)
     )
     
     db.add(nuevo_usuario)
@@ -48,4 +44,20 @@ def login(credenciales: schemas.UsuarioLogin, db: Session = Depends(get_db)):
 
 @app.get("/me", response_model=schemas.UsuarioResponse)
 def leer_usuario_actual(usuario_actual: Usuario = Depends(auth.get_current_user)):
+    return usuario_actual
+
+@app.put("/me", response_model=schemas.UsuarioResponse)
+def completar_perfil(
+    perfil: schemas.UsuarioPerfil,
+    usuario_actual: Usuario = Depends(auth.get_current_user),
+    db: Session = Depends(get_db)
+):
+    usuario_actual.nombre = perfil.nombre
+    usuario_actual.apellido = perfil.apellido
+    usuario_actual.genero = perfil.genero
+    usuario_actual.fecha_de_nacimiento = perfil.fecha_de_nacimiento
+    
+    db.commit
+    db.refresh(usuario_actual)
+    
     return usuario_actual
